@@ -1,17 +1,23 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public partial class GameManager : MonoBehaviour
+public class CoinUI : MonoBehaviour
 {
-    private static bool loaded = false;
+    [SerializeField]
+    private TMP_Text coinText;
 
-    void Start()
+    private void OnEnable()
     {
-        if (loaded) return;
+        PlayerObserverManager.OnCoinCollected += UpdateCoins;
+    }
 
-        loaded = true;
+    private void OnDisable()
+    {
+        PlayerObserverManager.OnCoinCollected -= UpdateCoins;
+    }
 
-        SceneManager.LoadScene("GamePlay", LoadSceneMode.Additive);
-        SceneManager.LoadScene("GUI", LoadSceneMode.Additive);
+    private void UpdateCoins(int totalCoins)
+    {
+        coinText.text = "Moedas: " + totalCoins;
     }
 }
